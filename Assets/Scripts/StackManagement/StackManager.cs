@@ -21,12 +21,16 @@ public class StackManager : MonoBehaviour
             {
                 // Shift cubes to the next available slot
                 ShiftCubeToNextAvailableSlot(i, cube);
+                Debug.Log("SAME COLOR");
+                cube.RemoveFromFormation(cube); // Remove from formation list to re-order cube positions
                 return;
             }
             else if (!currentSlot.IsOccupied) // If the slot is empty
             {
                 currentSlot.PlaceCube(cube); // Place the cube here
+                Debug.Log("EMPTY SLOT");
                 cube.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                cube.RemoveFromFormation(cube);
                 CheckForMatches(cube.colorEnum);  // Check for matches after placement
                 return;
             }

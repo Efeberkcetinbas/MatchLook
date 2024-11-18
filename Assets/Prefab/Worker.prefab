@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1777985189033956060}
   - component: {fileID: 174669469637300002}
   - component: {fileID: 8640144989818292869}
+  - component: {fileID: 5335378387866130437}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Untagged
@@ -103,7 +104,8 @@ MonoBehaviour:
   rightSpawnPoint: {fileID: 1495142862045789318}
   cubePrefab: {fileID: 1071640369511325825, guid: 7e7c058d22ebf1943bb3ee7b96aec58d, type: 3}
   spawnAnimationDuration: 0.5
-  spawnSpacing: 0.5
+  spawnSpacing: 1
+  cubeFormation: {fileID: 5335378387866130437}
 --- !u!114 &8640144989818292869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,12 +119,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colors:
-  - {r: 1, g: 0.35283017, b: 0.35283017, a: 1}
-  - {r: 0.35294116, g: 0.7386044, b: 1, a: 1}
-  - {r: 0.909725, g: 0.35294116, b: 1, a: 1}
-  - {r: 0.95107526, g: 1, b: 0.35294116, a: 1}
-  cubeCounter: 4
+  - {r: 0.7516585, g: 0.35294116, b: 1, a: 1}
+  - {r: 1, g: 0.3529412, b: 0.3529412, a: 1}
+  - {r: 1, g: 0.9492882, b: 0.35294116, a: 1}
+  - {r: 1, g: 0.3529412, b: 0.35294116, a: 1}
+  - {r: 0.7529412, g: 0.3529412, b: 1, a: 1}
+  - {r: 1, g: 0.3529412, b: 0.35294116, a: 1}
+  - {r: 0.98225945, g: 1, b: 0.35294116, a: 1}
+  - {r: 0.7529412, g: 0.3529412, b: 1, a: 1}
+  colorsEnums: 0300000001000000050000000100000003000000010000000500000003000000
+  cubeCounter: 8
   worker: {fileID: 174669469637300002}
+--- !u!114 &5335378387866130437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034916798159201757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de27e30727de6e43bbd1f75b0a84795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubes: []
 --- !u!1 &2610171150384760270
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,11 @@ public class Worker : MonoBehaviour
     [SerializeField] private float spawnAnimationDuration = 0.5f; // Animation duration for the spawn
     [SerializeField] private float spawnSpacing = 0.5f; // Vertical spacing between spawned cubes
 
+    [SerializeField] private CubeFormation cubeFormation; // Formation of Cubes
+
+
+    
+
     // This method spawns cubes on both sides
     public void SpawnCubes(int totalCubes, List<Color> colors, List<ColorsEnum> colorsEnums)
     {
@@ -39,12 +44,12 @@ public class Worker : MonoBehaviour
         List<ColorsEnum> rightEnums = new List<ColorsEnum>(colorsEnums.GetRange(cubesPerSide, cubesPerSide)); // Second half for right enums
 
         // Spawn cubes on both sides
-        SpawnSideCubes(leftSpawnPoint, leftColors, leftEnums);
-        SpawnSideCubes(rightSpawnPoint, rightColors, rightEnums);
+        SpawnSideCubes(leftSpawnPoint, leftColors, leftEnums,true);
+        SpawnSideCubes(rightSpawnPoint, rightColors, rightEnums,false);
     }
 
     // Spawn cubes for each side
-    private void SpawnSideCubes(Transform spawnPoint, List<Color> colors, List<ColorsEnum> colorsEnums)
+    private void SpawnSideCubes(Transform spawnPoint, List<Color> colors, List<ColorsEnum> colorsEnums,bool isLeft)
     {
         for (int i = 0; i < colors.Count; i++)
         {
@@ -53,13 +58,43 @@ public class Worker : MonoBehaviour
             
             // Assign the enum to the cube
             cube.colorEnum = colorsEnums[i];
+            cube.isLeft=isLeft;
+
 
             // Initialize the cube with the assigned color
             cube.Initialize(colors[i]);
-
+            
             // Set the position for the spawn and animate the cube's appearance
             Vector3 targetPosition = spawnPoint.position + new Vector3(0, i * spawnSpacing, 0);
             cubeObject.transform.DOMove(targetPosition, spawnAnimationDuration).SetEase(Ease.OutBack);
+
+            // Formation
+            if(cube.isLeft)
+                cubeFormation.leftCubes.Add(cube.transform);
+            else
+                cubeFormation.rightCubes.Add(cube.transform);
         }
+    }
+
+   
+
+    internal void OnReOrderLeft()
+    {
+        for (int i = 0; i < cubeFormation.leftCubes.Count; i++)
+        {
+            Vector3 targetPosition = leftSpawnPoint.position + new Vector3(0, i * spawnSpacing, 0);
+            cubeFormation.leftCubes[i].transform.DOMove(targetPosition, spawnAnimationDuration).SetEase(Ease.OutBack);
+        }
+        Debug.Log("Left side cubes reordered.");
+    }
+
+    internal void OnReOrderRight()
+    {
+        for (int i = 0; i < cubeFormation.rightCubes.Count; i++)
+        {
+            Vector3 targetPosition = rightSpawnPoint.position + new Vector3(0, i * spawnSpacing, 0);
+            cubeFormation.rightCubes[i].transform.DOMove(targetPosition, spawnAnimationDuration).SetEase(Ease.OutBack);
+        }
+        Debug.Log("Right side cubes reordered.");
     }
 }

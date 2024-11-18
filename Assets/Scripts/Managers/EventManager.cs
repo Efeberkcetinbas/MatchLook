@@ -6,6 +6,9 @@ public enum GameEvent
 {
     //Player
     OnPlayerStartMove,
+
+    //Cubes
+    
     
     //Game Management
     OnGameStart,
