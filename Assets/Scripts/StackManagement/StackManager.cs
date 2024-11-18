@@ -9,90 +9,67 @@ public class StackManager : MonoBehaviour
     [SerializeField] private int matchCount = 3;    // Number of cubes needed for a match
     [SerializeField] private float moveDuration = 0.5f; // Duration for moving cubes to slots
 
-
     public void AddCubeToStack(Cube cube)
     {
-        // Find the first available slot to add the cube
+        // Place the cube in the first available slot
         foreach (Slot slot in slots)
         {
-            if (!slot.IsOccupied)  // If slot is available
+            if (!slot.IsOccupied)  // Check if the slot is empty
             {
-                PlaceCubeInSlot(slot, cube);
-                CheckMatch();  // Check for a match after placing the cube
+                PlaceCubeInSlot(slot, cube);  // Move cube to the slot
+                CheckForMatches(cube.colorEnum);  // Check for matches based on the added cube's enum
                 return;
             }
         }
 
-        // If no slots are available, trigger a warning
         Debug.LogWarning("No available slots!");
     }
 
     private void PlaceCubeInSlot(Slot slot, Cube cube)
     {
-        slot.PlaceCube(cube);  // Place the cube in the slot
+        slot.PlaceCube(cube);  // Mark the slot as occupied and assign the cube
 
-        // Animate the cube to move to the slot position using DOTween
+        // Animate the cube moving to the slot position
         cube.transform.DOMove(slot.transform.position, moveDuration).SetEase(Ease.OutBack);
     }
 
-    private void CheckMatch()
+    private void CheckForMatches(ColorsEnum addedCubeType)
     {
-        // Create a list to hold colors of all cubes in the stack
-        List<Color> cubeColors = new List<Color>();
+        int typeCount = 0;
 
-        // Loop through all slots and add the colors of the cubes
-        foreach (var slot in slots)
+        // Count all cubes in the slots that match the type of the added cube
+        foreach (Slot slot in slots)
         {
             Cube currentCube = slot.OccupyingCube;
 
-            if (currentCube != null)
+            if (currentCube != null && currentCube.colorEnum == addedCubeType)
             {
-                cubeColors.Add(currentCube.CubeColor);
+                typeCount++;
             }
         }
 
-        // Check if there are 3 or more cubes of the same color
-        foreach (var cubeColor in cubeColors)
+        Debug.Log($"Count for {addedCubeType}: {typeCount}");
+
+        // If the count reaches the match threshold, clear the matched cubes
+        if (typeCount >= matchCount)
         {
-            int colorCount = 0;
-
-            // Count how many cubes have the same color
-            foreach (var color in cubeColors)
-            {
-                if (color == cubeColor)
-                {
-                    colorCount++;
-                    Debug.Log(colorCount);
-                }
-            }
-
-            // If we find 3 or more cubes of the same color, trigger a match
-            if (colorCount >= matchCount)
-            {
-                Debug.Log("MATCH");
-                StartCoroutine(ClearMatchedCubes(cubeColor));  // Start the coroutine to clear matched cubes
-                return;  // Exit after finding a match
-            }
+            Debug.Log("MATCH: " + addedCubeType);
+            StartCoroutine(ClearMatchedCubes(addedCubeType));  // Clear the matched cubes
         }
     }
 
-    private IEnumerator<UnityEngine.WaitForSeconds> ClearMatchedCubes(Color matchedColor)
+    private IEnumerator ClearMatchedCubes(ColorsEnum matchedType)
     {
-        // Wait for a short duration before clearing matched cubes (e.g., to show an animation)
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f);  // Optional delay before clearing
 
-        // Loop through all slots and clear cubes of the matched color
-        foreach (var slot in slots)
+        foreach (Slot slot in slots)
         {
             Cube currentCube = slot.OccupyingCube;
 
-            if (currentCube != null && currentCube.CubeColor == matchedColor)
+            if (currentCube != null && currentCube.colorEnum == matchedType)
             {
-                // Destroy the matched cube
-                Destroy(currentCube.gameObject);
-
-                // Clear the slot (you should define ClearSlot() in your Slot class)
-                slot.ClearSlot();
+                Destroy(currentCube.gameObject);  // Destroy the matched cube
+                slot.ClearSlot();  // Clear the slot
             }
         }
     }
