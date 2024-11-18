@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 174669469637300002}
   - component: {fileID: 8640144989818292869}
   - component: {fileID: 5335378387866130437}
+  - component: {fileID: 5197025471049466431}
   m_Layer: 0
   m_Name: Worker
   m_TagString: Untagged
@@ -142,7 +143,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5de27e30727de6e43bbd1f75b0a84795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubes: []
+  leftCubes: []
+  rightCubes: []
+--- !u!114 &5197025471049466431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034916798159201757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a198a8c00b28fe4c93ae3940240d1f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lookInterval: 5
+  detectionRange: 5
+  detectionBoxSize: {x: 1, y: 1, z: 1}
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  isLookingLeft: 1
 --- !u!1 &2610171150384760270
 GameObject:
   m_ObjectHideFlags: 0

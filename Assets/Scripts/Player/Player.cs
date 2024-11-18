@@ -17,9 +17,14 @@ public class Player : MonoBehaviour
             {
                 Cube tappedCube = hit.collider.GetComponent<Cube>();
 
-                if (tappedCube != null)
+                if (tappedCube != null && tappedCube.canTap)
                 {
                     stackManager.AddCubeToStack(tappedCube);
+                }
+
+                if(!tappedCube.canTap)
+                {
+                    Debug.Log("FAIL");
                 }
             }
         }

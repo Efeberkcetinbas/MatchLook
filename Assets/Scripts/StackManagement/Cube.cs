@@ -17,6 +17,7 @@ public class Cube : MonoBehaviour
 {
     public Color CubeColor { get; private set; }
     public bool isLeft;
+    public bool canTap=true;
     public ColorsEnum colorEnum;
 
     public void Initialize(Color color)
