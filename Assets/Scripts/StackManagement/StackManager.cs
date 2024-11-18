@@ -94,7 +94,6 @@ public class StackManager : MonoBehaviour
 
     private void CheckForMatches(ColorsEnum addedCubeType)
     {
-        
         List<Slot> matchedSlots = new List<Slot>();
 
         // Count all cubes in the slots that match the type of the added cube
@@ -120,7 +119,7 @@ public class StackManager : MonoBehaviour
 
     private IEnumerator ClearMatchedCubes(List<Slot> matchedSlots)
     {
-        yield return new WaitForSeconds(0.5f);  // Optional delay before clearing
+        yield return new WaitForSeconds(0.1f);  // Optional delay before clearing
 
         foreach (Slot slot in matchedSlots)
         {
@@ -133,6 +132,37 @@ public class StackManager : MonoBehaviour
             }
         }
 
-        // Optionally, you can trigger any additional effects, such as filling the cleared slots.
+        // After clearing, shift remaining cubes to fill empty slots
+        ShiftRemainingCubesToFirstAvailableSlot();
+    }
+
+    private void ShiftRemainingCubesToFirstAvailableSlot()
+    {
+        List<Cube> remainingCubes = new List<Cube>();
+
+        // Collect all cubes that are still in slots
+        foreach (Slot slot in slots)
+        {
+            if (slot.IsOccupied)
+            {
+                remainingCubes.Add(slot.OccupyingCube);
+                slot.ClearSlot();  // Temporarily clear the slots to allow shifting
+            }
+        }
+
+        // Place remaining cubes in the first available slots
+        foreach (Cube cube in remainingCubes)
+        {
+            for (int i = 0; i < slots.Count; i++)
+            {
+                Slot slot = slots[i];
+                if (!slot.IsOccupied)  // Find the first available slot
+                {
+                    slot.PlaceCube(cube);
+                    cube.transform.DOMove(slot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                    break;
+                }
+            }
+        }
     }
 }
