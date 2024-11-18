@@ -48,7 +48,7 @@ public class Worker : MonoBehaviour
     {
         for (int i = 0; i < colors.Count; i++)
         {
-            GameObject cubeObject = Instantiate(cubePrefab, spawnPoint.position, Quaternion.identity);
+            GameObject cubeObject = Instantiate(cubePrefab, spawnPoint.position, Quaternion.identity,transform);
             Cube cube = cubeObject.GetComponent<Cube>();
             
             // Assign the enum to the cube
