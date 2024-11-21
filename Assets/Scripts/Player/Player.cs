@@ -15,14 +15,14 @@ public class Player : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Cube tappedCube = hit.collider.GetComponent<Cube>();
+                People tappedPeople = hit.collider.GetComponent<People>();
 
-                if (tappedCube != null && tappedCube.canTap)
+                if (tappedPeople != null && tappedPeople.canTap)
                 {
-                    stackManager.AddCubeToStack(tappedCube);
+                    stackManager.AddCubeToStack(tappedPeople);
                 }
 
-                if(!tappedCube.canTap)
+                if(!tappedPeople.canTap)
                 {
                     Debug.Log("FAIL");
                 }

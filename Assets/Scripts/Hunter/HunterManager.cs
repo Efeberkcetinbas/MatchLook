@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorkerManager : MonoBehaviour
+public class HunterManager : MonoBehaviour
 {
-    public static WorkerManager Instance { get; private set; }
+    public static HunterManager Instance { get; private set; }
 
-    private readonly List<IWorker> workers = new();
+    private readonly List<IHunter> hunters = new();
 
     private void Awake()
     {
@@ -20,25 +20,25 @@ public class WorkerManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (var worker in workers)
+        foreach (var worker in hunters)
         {
             worker.UpdateBehavior(Time.deltaTime);
         }
     }
 
-    public void RegisterWorker(IWorker worker)
+    public void RegisterWorker(IHunter hunter)
     {
-        if (!workers.Contains(worker))
+        if (!hunters.Contains(hunter))
         {
-            workers.Add(worker);
+            hunters.Add(hunter);
         }
     }
 
-    public void UnregisterWorker(IWorker worker)
+    public void UnregisterWorker(IHunter hunter)
     {
-        if (workers.Contains(worker))
+        if (hunters.Contains(hunter))
         {
-            workers.Remove(worker);
+            hunters.Remove(hunter);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorkerLook : MonoBehaviour,IWorker
+public class HunterRadar : MonoBehaviour,IHunter
 {
     [SerializeField] private float lookInterval = 1f;
     [SerializeField] private float detectionRange = 5f;
@@ -12,19 +12,6 @@ public class WorkerLook : MonoBehaviour,IWorker
     private float timer = 0f;
     [SerializeField] private bool isLookingLeft = true;
 
-    //TEMP
-    public GameObject left,right;
-
-    private void Start()
-    {
-        WorkerManager.Instance.RegisterWorker(this);
-        Look();
-    }
-
-    private void OnDestroy()
-    {
-        WorkerManager.Instance.UnregisterWorker(this);
-    }
 
     public void UpdateBehavior(float deltaTime)
     {
@@ -39,32 +26,14 @@ public class WorkerLook : MonoBehaviour,IWorker
 
     private void Look()
     {
-        if (isLookingLeft)
-        {
-            Debug.Log($"{name} is looking left");
-            DetectCubesInDirection(Vector3.left, false);
-            DetectCubesInDirection(Vector3.right, true);
-            left.SetActive(true);
-            right.SetActive(false);
-        }
-        else
-        {
-            Debug.Log($"{name} is looking right");
-            DetectCubesInDirection(Vector3.right, false);
-            DetectCubesInDirection(Vector3.left, true);
-            left.SetActive(false);
-            right.SetActive(true);
-        }
-
-        isLookingLeft = !isLookingLeft;
+        //DetectCubesInDirection();
     }
 
-    private void DetectCubesInDirection(Vector3 direction, bool setCanTap)
+    
+    private void DetectCubesInDirection(bool setCanTap)
     {
-        // Calculate the center of the detection box
-        Vector3 detectionCenter = transform.position + direction * detectionRange;
-
-        // Perform OverlapBox detection
+        //Will implement later
+        /*
         Collider[] detectedObjects = Physics.OverlapBox(detectionCenter, detectionBoxSize / 2, Quaternion.identity, detectionLayer);
 
         Debug.Log($"Detected {detectedObjects.Length} cubes in direction {direction}");
@@ -75,7 +44,7 @@ public class WorkerLook : MonoBehaviour,IWorker
                 cube.canTap = setCanTap; // Update canTap based on current direction
                 Debug.Log($"Set {cube.name} canTap = {setCanTap}");
             }
-        }
+        }*/
     }
 
     private void OnDrawGizmosSelected()

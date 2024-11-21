@@ -10,28 +10,28 @@ public class StackManager : MonoBehaviour
     [SerializeField] private int matchCount = 3;    // Number of cubes needed for a match
     [SerializeField] private float moveDuration = 0.5f; // Duration for moving cubes to slots
 
-    public void AddCubeToStack(Cube cube)
+    public void AddCubeToStack(People people)
     {
         // Find the first available slot for this color
         for (int i = 0; i < slots.Count; i++)
         {
             Slot currentSlot = slots[i];
 
-            if (currentSlot.IsOccupiedBySameColor(cube.colorEnum)) // If same color cube is already there
+            if (currentSlot.IsOccupiedBySameColor(people.colorEnum)) // If same color cube is already there
             {
                 // Shift cubes to the next available slot
-                ShiftCubeToNextAvailableSlot(i, cube);
+                ShiftCubeToNextAvailableSlot(i, people);
                 Debug.Log("SAME COLOR");
-                cube.RemoveFromFormation(cube); // Remove from formation list to re-order cube positions
+                //cube.RemoveFromFormation(cube); // Remove from formation list to re-order cube positions
                 return;
             }
             else if (!currentSlot.IsOccupied) // If the slot is empty
             {
-                currentSlot.PlaceCube(cube); // Place the cube here
+                currentSlot.PlaceCube(people); // Place the cube here
                 Debug.Log("EMPTY SLOT");
-                cube.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
-                cube.RemoveFromFormation(cube);
-                CheckForMatches(cube.colorEnum);  // Check for matches after placement
+                people.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                //cube.RemoveFromFormation(cube);
+                CheckForMatches(people.colorEnum);  // Check for matches after placement
                 return;
             }
         }
@@ -39,7 +39,7 @@ public class StackManager : MonoBehaviour
         Debug.LogWarning("No available slots!");
     }
 
-    private void ShiftCubeToNextAvailableSlot(int startIndex, Cube newCube)
+    private void ShiftCubeToNextAvailableSlot(int startIndex, People newPeople)
     {
         bool placed = false;
 
@@ -51,15 +51,15 @@ public class StackManager : MonoBehaviour
             // If the slot is empty, place the cube there
             if (!currentSlot.IsOccupied)
             {
-                currentSlot.PlaceCube(newCube);
-                newCube.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                currentSlot.PlaceCube(newPeople);
+                newPeople.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
                 placed = true;
                 break;
             }
             // If the slot is occupied by a different color, shift the existing cube to the next available slot
-            else if (currentSlot.IsOccupiedByDifferentColor(newCube.colorEnum))
+            else if (currentSlot.IsOccupiedByDifferentColor(newPeople.colorEnum))
             {
-                Cube cubeToShift = currentSlot.OccupyingCube;
+                People peopleToShift = currentSlot.OccupyingPeople;
                 currentSlot.ClearSlot();
 
                 // Find the next available slot for the shifted cube
@@ -68,15 +68,15 @@ public class StackManager : MonoBehaviour
                     Slot nextSlot = slots[j];
                     if (!nextSlot.IsOccupied)
                     {
-                        nextSlot.PlaceCube(cubeToShift);
-                        cubeToShift.transform.DOMove(nextSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                        nextSlot.PlaceCube(peopleToShift);
+                        peopleToShift.transform.DOMove(nextSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
                         break;
                     }
                 }
 
                 // Now place the new cube in the current slot
-                currentSlot.PlaceCube(newCube);
-                newCube.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                currentSlot.PlaceCube(newPeople);
+                newPeople.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
                 placed = true;
                 break;
             }
@@ -86,7 +86,7 @@ public class StackManager : MonoBehaviour
         if (placed)
         {
             // Wait for the animation to finish before checking for matches
-            StartCoroutine(WaitForAnimationToCompleteAndCheckForMatches(newCube.colorEnum));
+            StartCoroutine(WaitForAnimationToCompleteAndCheckForMatches(newPeople.colorEnum));
         }
     }
 
@@ -103,9 +103,9 @@ public class StackManager : MonoBehaviour
         // Count all cubes in the slots that match the type of the added cube
         foreach (Slot slot in slots)
         {
-            Cube currentCube = slot.OccupyingCube;
+            People currentPeople = slot.OccupyingPeople;
 
-            if (currentCube != null && currentCube.colorEnum == addedCubeType)
+            if (currentPeople != null && currentPeople.colorEnum == addedCubeType)
             {
                 matchedSlots.Add(slot);  // Add the slot to the matched list if the color matches
             }
@@ -127,11 +127,11 @@ public class StackManager : MonoBehaviour
 
         foreach (Slot slot in matchedSlots)
         {
-            Cube currentCube = slot.OccupyingCube;
+            People currentPeople = slot.OccupyingPeople;
 
-            if (currentCube != null)
+            if (currentPeople != null)
             {
-                Destroy(currentCube.gameObject);  // Destroy the matched cube
+                Destroy(currentPeople.gameObject);  // Destroy the matched cube
                 slot.ClearSlot();  // Clear the slot
             }
         }
@@ -142,28 +142,28 @@ public class StackManager : MonoBehaviour
 
     private void ShiftRemainingCubesToFirstAvailableSlot()
     {
-        List<Cube> remainingCubes = new List<Cube>();
+        List<People> remainingPeople = new List<People>();
 
         // Collect all cubes that are still in slots
         foreach (Slot slot in slots)
         {
             if (slot.IsOccupied)
             {
-                remainingCubes.Add(slot.OccupyingCube);
+                remainingPeople.Add(slot.OccupyingPeople);
                 slot.ClearSlot();  // Temporarily clear the slots to allow shifting
             }
         }
 
         // Place remaining cubes in the first available slots
-        foreach (Cube cube in remainingCubes)
+        foreach (People people in remainingPeople)
         {
             for (int i = 0; i < slots.Count; i++)
             {
                 Slot slot = slots[i];
                 if (!slot.IsOccupied)  // Find the first available slot
                 {
-                    slot.PlaceCube(cube);
-                    cube.transform.DOMove(slot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                    slot.PlaceCube(people);
+                    people.transform.DOMove(slot.transform.position, moveDuration).SetEase(Ease.OutBack);
                     break;
                 }
             }
