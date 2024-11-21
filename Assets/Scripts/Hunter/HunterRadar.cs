@@ -2,60 +2,88 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class HunterRadar : MonoBehaviour,IHunter
 {
-    [SerializeField] private float lookInterval = 1f;
-    [SerializeField] private float detectionRange = 5f;
-    [SerializeField] private Vector3 detectionBoxSize = new Vector3(1f, 1f, 1f);
-    [SerializeField] private LayerMask detectionLayer;
+     private float lookInterval;
+    private float detectionRange;
+    private float detectionRadius;
+    private float rotationSpeed;
+    private LayerMask detectionLayer;
 
     private float timer = 0f;
-    [SerializeField] private bool isLookingLeft = true;
 
+    /// <summary>
+    /// Applies settings from the HunterSettings ScriptableObject.
+    /// </summary>
+    public void ApplySettings(HunterSettings settings)
+    {
+        lookInterval = settings.lookInterval;
+        detectionRange = settings.detectionRange;
+        detectionRadius = settings.detectionRadius;
+        rotationSpeed = settings.rotationSpeed;
+        detectionLayer = settings.detectionLayer;
+    }
 
+    /// <summary>
+    /// Updates hunter behavior.
+    /// </summary>
     public void UpdateBehavior(float deltaTime)
     {
         timer += deltaTime;
 
         if (timer >= lookInterval)
         {
-            Look();
+            DetectPeople();
             timer = 0f;
+        }
+
+        RotateHunter(deltaTime);
+    }
+
+    /// <summary>
+    /// Rotates the hunter over time.
+    /// </summary>
+    private void RotateHunter(float deltaTime)
+    {
+        transform.Rotate(Vector3.up, rotationSpeed * deltaTime);
+    }
+
+    /// <summary>
+    /// Detects all "People" objects within the detection radius.
+    /// </summary>
+    private void DetectPeople()
+    {
+        Collider[] detectedObjects = Physics.OverlapSphere(transform.position, detectionRadius, detectionLayer);
+        Debug.Log($"Hunter detected {detectedObjects.Length} objects.");
+
+        foreach (Collider obj in detectedObjects)
+        {
+            if (obj.TryGetComponent<People>(out People person))
+            {
+                Debug.Log($"Detected a person: {person.name}");
+                HandlePersonDetection(person);
+            }
         }
     }
 
-    private void Look()
+    /// <summary>
+    /// Handles logic when a person is detected.
+    /// </summary>
+    /// <param name="person">The detected person.</param>
+    private void HandlePersonDetection(People person)
     {
-        //DetectCubesInDirection();
+        // Example logic: Prevent the person from being tapped
+        person.CanTap = false;
+        Debug.Log($"Set {person.name}'s canTap to false.");
     }
 
-    
-    private void DetectCubesInDirection(bool setCanTap)
-    {
-        //Will implement later
-        /*
-        Collider[] detectedObjects = Physics.OverlapBox(detectionCenter, detectionBoxSize / 2, Quaternion.identity, detectionLayer);
-
-        Debug.Log($"Detected {detectedObjects.Length} cubes in direction {direction}");
-        foreach (Collider obj in detectedObjects)
-        {
-            if (obj.TryGetComponent<Cube>(out Cube cube))
-            {
-                cube.canTap = setCanTap; // Update canTap based on current direction
-                Debug.Log($"Set {cube.name} canTap = {setCanTap}");
-            }
-        }*/
-    }
-
+    /// <summary>
+    /// Draws the detection range for debugging.
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
-        // Visualize the detection range for both directions
-        Gizmos.color = Color.red; // Left
-        Vector3 leftCenter = transform.position + Vector3.left * detectionRange;
-        Gizmos.DrawWireCube(leftCenter, detectionBoxSize);
-
-        Gizmos.color = Color.green; // Right
-        Vector3 rightCenter = transform.position + Vector3.right * detectionRange;
-        Gizmos.DrawWireCube(rightCenter, detectionBoxSize);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

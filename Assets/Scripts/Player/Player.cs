@@ -17,12 +17,13 @@ public class Player : MonoBehaviour
             {
                 People tappedPeople = hit.collider.GetComponent<People>();
 
-                if (tappedPeople != null && tappedPeople.canTap)
+                if (tappedPeople != null && tappedPeople.CanTap)
                 {
+                    //tappedPeople.animator.SetBool("Run",true);
                     stackManager.AddCubeToStack(tappedPeople);
                 }
 
-                if(!tappedPeople.canTap)
+                if(!tappedPeople.CanTap)
                 {
                     Debug.Log("FAIL");
                 }

@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 259763552}
   - component: {fileID: 259763551}
+  - component: {fileID: 259763553}
   m_Layer: 0
   m_Name: LevelSpawner
   m_TagString: Untagged
@@ -155,20 +156,21 @@ MonoBehaviour:
   spawnableObjects:
   - tag: People Spawner
     positions:
-    - {x: -2, y: 0, z: 0}
-    - {x: -1, y: 0, z: 0}
-    - {x: 1, y: 0, z: 0}
-    - {x: 2, y: 0, z: 0}
-    - {x: -2, y: 0, z: 1}
-    - {x: -1, y: 0, z: 1}
-    - {x: 0, y: 0, z: 1}
-    - {x: 1, y: 0, z: 1}
-    - {x: 2, y: 0, z: 1}
-  - tag: Hunter Spawner
-    positions:
-    - {x: 0, y: 0, z: 0}
+    - {x: -2, y: 0, z: -5}
+    - {x: -1, y: 0, z: -5}
+    - {x: 1, y: 0, z: -5}
+    - {x: 2, y: 0, z: -5}
+    - {x: -2, y: 0, z: -6}
+    - {x: -1, y: 0, z: -6}
+    - {x: 0, y: 0, z: -6}
+    - {x: 1, y: 0, z: -6}
+    - {x: 2, y: 0, z: -6}
   - tag: Obstacle Spawner
     positions: []
+  hunterSpawnData:
+  - position: {x: 0, y: 0, z: -4}
+    hunterSettings: {fileID: 11400000, guid: 1dec59e5a0dd53d45b5d4f8ea304407e, type: 2}
+  colorAssigner: {fileID: 259763553}
 --- !u!4 &259763552
 Transform:
   m_ObjectHideFlags: 0
@@ -184,6 +186,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &259763553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259763550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4deecb258fe93194ebbf779616f3641f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorAssignments:
+  - ColorEnum: 0
+    Color: {r: 1, g: 0, b: 0, a: 1}
+    Count: 3
+  - ColorEnum: 1
+    Color: {r: 0, g: 0.7631967, b: 1, a: 1}
+    Count: 4
+  - ColorEnum: 4
+    Color: {r: 0.68810844, g: 0, b: 1, a: 1}
+    Count: 2
 --- !u!1001 &296355312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -609,13 +633,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3677188, y: 0, z: 0, w: 0.92993706}
-  m_LocalPosition: {x: 0, y: 8.88, z: -10}
+  m_LocalRotation: {x: 0.39153424, y: 0, z: 0, w: 0.9201635}
+  m_LocalPosition: {x: 0, y: 14.76, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 43.15, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 46.1, y: 0, z: 0}
 --- !u!1001 &1014960714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -787,7 +811,7 @@ Transform:
   m_GameObject: {fileID: 1805518447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -834,7 +858,7 @@ MonoBehaviour:
   - {fileID: 694136497}
   - {fileID: 1014960716}
   matchCount: 3
-  moveDuration: 0.5
+  moveDuration: 2
 --- !u!4 &1970752893
 Transform:
   m_ObjectHideFlags: 0

@@ -504,6 +504,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6753659738205131554}
+  - component: {fileID: 8936484844213963691}
   m_Layer: 0
   m_Name: Hunter
   m_TagString: Untagged
@@ -527,6 +528,18 @@ Transform:
   - {fileID: 1853769160664216364}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8936484844213963691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3987930803935270029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749a0a7bbbf4b324481b697c2d97b7cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4037841901854970221
 GameObject:
   m_ObjectHideFlags: 0

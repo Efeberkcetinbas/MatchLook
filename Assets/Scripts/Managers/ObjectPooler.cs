@@ -71,4 +71,9 @@ public class ObjectPooler : MonoBehaviour
 
         return objectToSpawn;
     }
+
+    public void ReturnToPool(GameObject obj)
+    {
+        obj.SetActive(false); // Deactivate the object
+    }
 }

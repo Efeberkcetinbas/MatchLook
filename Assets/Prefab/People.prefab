@@ -247,9 +247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1d43c2b75f4b548a6b18d7ceec88a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canTap: 1
-  colorEnum: 0
-  skinnedMeshRenderer: {fileID: 0}
+  CanTap: 1
+  skinnedMeshRenderer: {fileID: 2673109570873188762}
+  animator: {fileID: 2521430078822719848}
 --- !u!1 &1254292795517851811
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,6 +323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1639882880832827825}
+  - component: {fileID: 2521430078822719848}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -347,6 +348,27 @@ Transform:
   - {fileID: 3247396692149067919}
   m_Father: {fileID: 2061414777649747624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2521430078822719848
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128470232379468555}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 53f3d568bcb084641b3af66e2f62f721, type: 3}
+  m_Controller: {fileID: 9100000, guid: 93e7340ed2752a446a454ae43e933d22, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2183596194458585168
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,7 +989,7 @@ GameObject:
   - component: {fileID: 3247396692149067919}
   - component: {fileID: 2673109570873188762}
   m_Layer: 0
-  m_Name: titan
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

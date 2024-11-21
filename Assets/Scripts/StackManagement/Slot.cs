@@ -23,12 +23,12 @@ public class Slot : MonoBehaviour
     // Check if the slot is occupied by a cube of the same color
     public bool IsOccupiedBySameColor(ColorsEnum colorEnum)
     {
-        return OccupyingPeople != null && OccupyingPeople.colorEnum == colorEnum;
+        return OccupyingPeople != null && OccupyingPeople.ColorEnum == colorEnum;
     }
 
     // Check if the slot is occupied by a different color
     public bool IsOccupiedByDifferentColor(ColorsEnum colorEnum)
     {
-        return OccupyingPeople != null && OccupyingPeople.colorEnum != colorEnum;
+        return OccupyingPeople != null && OccupyingPeople.ColorEnum != colorEnum;
     }
 }

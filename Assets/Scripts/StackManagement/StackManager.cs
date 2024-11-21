@@ -17,7 +17,7 @@ public class StackManager : MonoBehaviour
         {
             Slot currentSlot = slots[i];
 
-            if (currentSlot.IsOccupiedBySameColor(people.colorEnum)) // If same color cube is already there
+            if (currentSlot.IsOccupiedBySameColor(people.ColorEnum)) // If same color cube is already there
             {
                 // Shift cubes to the next available slot
                 ShiftCubeToNextAvailableSlot(i, people);
@@ -29,9 +29,13 @@ public class StackManager : MonoBehaviour
             {
                 currentSlot.PlaceCube(people); // Place the cube here
                 Debug.Log("EMPTY SLOT");
-                people.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                people.transform.LookAt(currentSlot.transform);
+                people.transform.DOMove(currentSlot.transform.position, moveDuration).OnComplete(()=>{
+                    people.animator.SetBool("Run", false);
+                });
+                people.animator.SetBool("Run",true);
                 //cube.RemoveFromFormation(cube);
-                CheckForMatches(people.colorEnum);  // Check for matches after placement
+                CheckForMatches(people.ColorEnum);  // Check for matches after placement
                 return;
             }
         }
@@ -52,12 +56,17 @@ public class StackManager : MonoBehaviour
             if (!currentSlot.IsOccupied)
             {
                 currentSlot.PlaceCube(newPeople);
-                newPeople.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                newPeople.transform.DOMove(currentSlot.transform.position, moveDuration).OnComplete(()=>{
+                    newPeople.animator.SetBool("Run", false);
+                });
+                newPeople.transform.LookAt(currentSlot.transform);
+                newPeople.animator.SetBool("Run",true);
+                
                 placed = true;
                 break;
             }
             // If the slot is occupied by a different color, shift the existing cube to the next available slot
-            else if (currentSlot.IsOccupiedByDifferentColor(newPeople.colorEnum))
+            else if (currentSlot.IsOccupiedByDifferentColor(newPeople.ColorEnum))
             {
                 People peopleToShift = currentSlot.OccupyingPeople;
                 currentSlot.ClearSlot();
@@ -76,7 +85,13 @@ public class StackManager : MonoBehaviour
 
                 // Now place the new cube in the current slot
                 currentSlot.PlaceCube(newPeople);
-                newPeople.transform.DOMove(currentSlot.transform.position, moveDuration).SetEase(Ease.OutBack);
+                newPeople.transform.DOMove(currentSlot.transform.position, moveDuration).OnComplete(()=>{
+                    newPeople.animator.SetBool("Run", false);
+                });
+                newPeople.animator.SetBool("Run",true);
+                newPeople.transform.LookAt(currentSlot.transform);
+                
+
                 placed = true;
                 break;
             }
@@ -86,7 +101,7 @@ public class StackManager : MonoBehaviour
         if (placed)
         {
             // Wait for the animation to finish before checking for matches
-            StartCoroutine(WaitForAnimationToCompleteAndCheckForMatches(newPeople.colorEnum));
+            StartCoroutine(WaitForAnimationToCompleteAndCheckForMatches(newPeople.ColorEnum));
         }
     }
 
@@ -105,7 +120,7 @@ public class StackManager : MonoBehaviour
         {
             People currentPeople = slot.OccupyingPeople;
 
-            if (currentPeople != null && currentPeople.colorEnum == addedCubeType)
+            if (currentPeople != null && currentPeople.ColorEnum == addedCubeType)
             {
                 matchedSlots.Add(slot);  // Add the slot to the matched list if the color matches
             }
@@ -131,7 +146,8 @@ public class StackManager : MonoBehaviour
 
             if (currentPeople != null)
             {
-                Destroy(currentPeople.gameObject);  // Destroy the matched cube
+                //Destroy(currentPeople.gameObject);  // Destroy the matched cube
+                ObjectPooler.Instance.ReturnToPool(currentPeople.gameObject);
                 slot.ClearSlot();  // Clear the slot
             }
         }
